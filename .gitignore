@@ -1,0 +1,91 @@
+# ── Environment ──────────────────────────────────────────────────────
+.env
+.env.local
+.venv/
+.venv_packages/
+venv/
+env/
+ENV/
+
+# ── Python ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+pip-wheel-metadata/
+
+# ── Test / lint / type caches ────────────────────────────────────────
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+nosetests.xml
+
+# ── Jupyter ──────────────────────────────────────────────────────────
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ── Downloaded market data ───────────────────────────────────────────
+data/
+*.csv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+tmp_run/
+
+# ── Trained models ───────────────────────────────────────────────────
+*.joblib
+*.pkl
+*.pickle
+models/
+
+# ── Generated output (tearsheets, training reports, figures) ─────────
+reports/
+figures/
+*.png
+*.svg
+
+# ── Reference texts (copyrighted, not redistributed) ─────────────────
+references/
+*.pdf
+*.epub
+*.mobi
+
+# ── Vector store ─────────────────────────────────────────────────────
+chroma_db/
+.chroma/
+
+# ── Logs ─────────────────────────────────────────────────────────────
+logs/
+*.log
+run.log
+
+# ── Caches ───────────────────────────────────────────────────────────
+.cache/
+.matplotlib/
+
+# ── Editors ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Agent / assistant scratch ────────────────────────────────────────
+.claude/
+
+# ── OS ───────────────────────────────────────────────────────────────
+.DS_Store
+._*
+Thumbs.db
