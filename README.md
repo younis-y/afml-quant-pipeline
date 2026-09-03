@@ -8,13 +8,24 @@ A working implementation of the López de Prado *Advances in Financial Machine L
 
 It can. What follows is the assembled chain, the numbers that were actually measured while assembling it, and a Scope section stating what it does not do.
 
-## What this is, and what it is not
+## Why the restraint is the point
 
-This is an **implementation exhibit**. It is a library of the book's methods with a test suite around them.
+This is a **library of the book's methods with a test suite around them**, and it
+deliberately publishes no headline Sharpe ratio, no equity curve, and no backtest
+offered as evidence of edge. Every number below is a property of the code,
+measured by running it.
 
-**No strategy result is claimed here.** There is no headline Sharpe ratio, no equity curve, no backtest offered as evidence of edge. The backtester exists so that the labelling and validation machinery has somewhere to terminate, not so that its output can be advertised. Every number below is a property of the code, measured by running it — not a property of a strategy.
+That is not a gap — it is the argument of the chapters being implemented.
+Chapters 11–15 are a sustained case that a backtest is a research tool almost
+always misread as a discovery, and that a Sharpe ratio quoted without a trial
+count and a track-record length is not a number at all. The repository ships
+`deflated_sharpe` and `probabilistic_sharpe` precisely so that claim can be made
+rigorously; leading with an unadjusted backtest result would refute the very
+machinery on display.
 
-That restraint is deliberate. The whole argument of Chapters 11–15 of the book is that a backtest is a research tool that is almost always misread as a discovery, and that a Sharpe ratio quoted without a trial count and a track-record length is not a number at all. A repository implementing those chapters and then leading with an unadjusted backtest result would be refuting itself.
+The backtester exists so the labelling and validation chain has somewhere to
+terminate. What is demonstrated here is that the chain runs end to end, against a
+free data source, with each link independently tested.
 
 ## Measured properties
 
