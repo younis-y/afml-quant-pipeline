@@ -93,7 +93,9 @@ def analyze_fat_tails(returns: pd.Series) -> Dict[str, Union[float, bool, str]]:
     jb_stat, jb_p = sp_stats.jarque_bera(r)
 
     # Kolmogorov-Smirnov against fitted normal
-    ks_stat, ks_p = sp_stats.kstest(r, "norm", args=(np.mean(r), np.std(r)))
+    # Pass the frozen distribution rather than the name "norm": SciPy now
+    # resolves the string to scipy.special.ndtr, which takes no loc/scale.
+    ks_stat, ks_p = sp_stats.kstest(r, sp_stats.norm(loc=np.mean(r), scale=np.std(r)).cdf)
 
     # Classification
     if excess_kurt > 3:

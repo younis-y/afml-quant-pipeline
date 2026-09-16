@@ -13,7 +13,6 @@ dependencies = [
     "beautifulsoup4>=4.12.0",   # yfinance imports bs4 at module import time
     "pandas>=2.0.0",
     "numpy>=1.24.0",
-    "pandas-ta>=0.3.14b",
     # Backtesting and optimisation
     "vectorbt>=0.26.0",
     "quantstats>=0.0.62",
@@ -39,6 +38,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# pipeline/technical_indicators.py already degrades to a no-op without this,
+# and pandas-ta publishes no wheel for 3.11+, so it stays optional.
+indicators = ["pandas-ta>=0.3.14b"]
 # The REST layer and the knowledge base are optional. The pipeline, the data
 # layer, the backtester and the test suite all run without them.
 api = [
