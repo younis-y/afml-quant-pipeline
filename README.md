@@ -1,5 +1,7 @@
 # AFML Quant Pipeline
 
+[![ci](https://github.com/younis-y/afml-quant-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/younis-y/afml-quant-pipeline/actions/workflows/ci.yml)
+
 A working implementation of the López de Prado *Advances in Financial Machine Learning* toolchain — dollar bars, fractional differentiation with a minimum-*d* stationarity search, triple-barrier labelling and meta-labelling, sequential-bootstrap sample weights, purged and combinatorial-purged cross-validation with embargo, probabilistic and deflated Sharpe ratios, and MDI/MDA/SFI feature importance — wired to an OpenBB v4.6 data layer, a walk-forward backtester and a Streamlit front end.
 
 ## The question
