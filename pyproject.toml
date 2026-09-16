@@ -1,0 +1,90 @@
+[project]
+name = "afml-quant-pipeline"
+version = "0.1.0"
+description = "López de Prado AFML toolchain implemented end to end against a free data source, with each link tested in isolation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+dependencies = [
+    # Data
+    "openbb>=4.6.0",
+    "yfinance>=0.2.0",
+    "beautifulsoup4>=4.12.0",   # yfinance imports bs4 at module import time
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "pandas-ta>=0.3.14b",
+    # Backtesting and optimisation
+    "vectorbt>=0.26.0",
+    "quantstats>=0.0.62",
+    # Machine learning
+    "scikit-learn>=1.3.0",
+    "numba>=0.57.0",
+    "scipy>=1.11.0",
+    "statsmodels>=0.14.0",
+    "joblib>=1.3.0",
+    "xgboost>=1.7.0",
+    "lightgbm>=4.0.0",
+    "prophet>=1.1.0",
+    # Risk and volatility
+    "arch>=6.0.0",
+    # Visualisation and UI
+    "plotly>=5.18.0",
+    "matplotlib>=3.7.0",
+    "streamlit>=1.30.0",
+    # Validation and utilities
+    "pydantic>=2.5.0",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+# The REST layer and the knowledge base are optional. The pipeline, the data
+# layer, the backtester and the test suite all run without them.
+api = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "httpx>=0.26.0",
+]
+knowledge = [
+    "chromadb>=0.4.22",
+    "langchain-community>=0.0.20",
+    "langchain-google-genai>=1.0.0",
+    "google-generativeai>=0.4.0",
+    "google-cloud-aiplatform>=1.42.0",
+    "ebooklib>=0.18",
+    "tqdm>=4.66.0",
+    "PyPDF2>=3.0.0",
+]
+dev = [
+    "afml-quant-pipeline[api,knowledge]",
+    "pytest>=8.0.0",
+    "ruff>=0.9",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["analysis_engine", "api", "pipeline", "ui", "utils"]
+
+# ---------------------------------------------------------------------------
+# Ruff
+
+[tool.ruff]
+target-version = "py311"
+exclude = ["data", ".chroma", "reports", "logs", "references"]
+
+[tool.ruff.lint.per-file-ignores]
+# Optional dependencies are probed with try/except ImportError and recorded in a
+# HAS_* flag. The import is the availability test, so it is unused by design.
+"pipeline/models.py" = ["F401"]
+"analysis_engine/knowledge.py" = ["F401"]
+
+# Streamlit requires st.set_page_config() to run before any other st call, and
+# these entry points extend sys.path before importing from the package, so their
+# imports cannot sit at the top of the file.
+"ui/dashboard.py" = ["E402"]
+"scripts/explain_result.py" = ["E402"]
+"main.py" = ["E402"]

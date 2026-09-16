@@ -35,28 +35,49 @@ Run on Python 3.13.5, pandas 2.3.3, NumPy 2.2.6, scikit-learn 1.6.1, pytest 8.3.
 |---|---|
 | Test modules | 18 |
 | Tests collected | 183 |
-| Tests passing offline | **177** |
-| Tests deselected by the offline filter | 6, marked `slow` or `integration` |
-| Wall time, offline suite | 128 s on the machine above |
-| Same suite with `requirements-extras.txt` absent | 183 collected, 177 passing |
+| Tests passing, default run | **181** |
+| Tests deselected by default | 2, marked `network` |
+| Wall time, default suite | 136 s on the machine above |
+| Same suite with the optional extras absent | 183 collected, 177 passing |
 | Python modules (excluding tests) | 39 |
 
 ```bash
-python -m pytest -q -m "not slow and not integration"
-# 177 passed, 6 deselected
+python -m pytest -q
+# 181 passed, 2 deselected
 ```
 
-Two of the 6 deselected tests actually need the network: `tests/test_api.py::TestDashboardEndpoint::test_dashboard_returns_200` and `::TestSymbolEndpoint::test_resolve_symbol`, which reach OpenBB and Yahoo's symbol search. The other four do not, and the marker is doing a different job for each of them. `tests/test_api.py` is marked `integration` at module level because the whole module needs `fastapi` and `httpx` from `requirements-extras.txt`, which is why `TestHealthEndpoint::test_health_returns_200` — an in-process `TestClient` call to an endpoint that returns a literal — is deselected too. The remaining three (`test_stats.py::TestMasterAnalysis::test_analyze_series_structure`, `test_stats_extended.py::TestBootstrapVaR::test_large_simulations`, `test_validation_extended.py::TestValidateStrategy::test_end_to_end`) are marked for cost, not for connectivity: a 50,000-path bootstrap and a RandomForest fit on seeded synthetic data. They pass offline in about 22 s. Run the full suite with `python -m pytest` if you want them; only the two named first can fail for reasons outside this code.
+Two tests reach the network, and both are marked `network` and deselected by default, so a
+clean checkout runs green without connectivity: `tests/test_api.py::TestDashboardEndpoint::test_dashboard_returns_200`
+and `::TestSymbolEndpoint::test_resolve_symbol`, which hit OpenBB and Yahoo's symbol search.
+Run them with `python -m pytest -m network` if you want them; they are the only two tests here
+that can fail for reasons outside this code.
+
+Three further tests are marked `slow` for cost rather than connectivity: a 50,000-path bootstrap
+in `test_stats_extended.py::TestBootstrapVaR::test_large_simulations`, plus
+`test_stats.py::TestMasterAnalysis::test_analyze_series_structure` and
+`test_validation_extended.py::TestValidateStrategy::test_end_to_end`, which fit a RandomForest on
+seeded synthetic data. They pass offline in about 22 s and run by default. `tests/test_api.py` is
+marked `integration` at module level because the module needs `fastapi` and `httpx` from the
+optional `api` extra; without it the whole module skips, which is where the older figure of 177
+passing comes from.
 
 ## Reproducing
 
 ```bash
 git clone <this repo> && cd afml-quant-pipeline
-pip install -r requirements.txt
-python -m pytest -q -m "not slow and not integration"
+pip install -e .
+python -m pytest -q
 ```
 
-`requirements.txt` covers the pipeline, the data layer, the backtester, the Streamlit dashboard and the offline test suite — `pytest` included, so the three lines above run end to end on a clean machine. The optional REST and RAG layers have their own file, `requirements-extras.txt`, and nothing in the core path needs them — which was checked rather than assumed. With `chromadb`, `langchain-google-genai`, `langchain-community`, `vertexai`, `google-generativeai`, `ebooklib`, `PyPDF2`, `fastapi` and `uvicorn` all blocked at import time, `import analysis_engine` still succeeds and the command above still reports `177 passed, 6 deselected`. `analysis_engine/knowledge.py` imports cleanly without any of them; the classes that need one raise `ImportError` on construction, naming the package to install.
+`pip install -e .` covers the pipeline, the data layer, the backtester, the Streamlit dashboard
+and the default test suite, `pytest` included, so the three lines above run end to end on a clean
+machine. The REST and knowledge layers are optional extras, `pip install -e ".[api]"` and
+`pip install -e ".[knowledge]"`, and nothing in the core path needs them, which was checked rather
+than assumed. With `chromadb`, `langchain-google-genai`, `langchain-community`, `vertexai`,
+`google-generativeai`, `ebooklib`, `PyPDF2`, `fastapi` and `uvicorn` all blocked at import time,
+`import analysis_engine` still succeeds and the suite still reports 177 passing.
+`analysis_engine/knowledge.py` imports cleanly without any of them; the classes that need one
+raise `ImportError` on construction, naming the package to install.
 
 No API key is required for anything above. Copy `.env.example` to `.env` only if you want the optional layers — see [Configuration](#configuration).
 
