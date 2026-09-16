@@ -16,7 +16,6 @@ from datetime import datetime
 import requests
 import pandas as pd
 import numpy as np
-import warnings
 
 # Add project root to path
 sys.path.append(str(Path(__file__).parent.parent))
@@ -176,23 +175,6 @@ def load_data(file_path: Path) -> pd.DataFrame:
             logger.error(f"Error parsing PCAP: {e}")
             logger.warning("Falling back to simulation due to parse error.")
             return _generate_mock_data()
-
-def _generate_mock_data():
-    """Helper to generate synthetic data when parsing fails."""
-    n_bars = 2000
-    dates = pd.date_range(end=datetime.now(), periods=n_bars, freq='5min')
-    np.random.seed(42)
-    returns = np.random.randn(n_bars) * 0.001 + 0.0001
-    price = 100 * np.exp(np.cumsum(returns))
-    volume = np.random.lognormal(10, 1, n_bars)
-    
-    return pd.DataFrame({
-        'Close': price,
-        'Volume': volume,
-        'High': price * (1 + np.abs(np.random.randn(n_bars) * 0.001)),
-        'Low': price * (1 - np.abs(np.random.randn(n_bars) * 0.001))
-    }, index=dates)
-    
     if file_path.suffix.lower() == '.csv':
         df = pd.read_csv(file_path, parse_dates=True, index_col=0)
         
@@ -237,6 +219,24 @@ def _generate_mock_data():
         return df
         
     raise ValueError(f"Unsupported file format: {file_path.suffix}")
+
+
+def _generate_mock_data():
+    """Helper to generate synthetic data when parsing fails."""
+    n_bars = 2000
+    dates = pd.date_range(end=datetime.now(), periods=n_bars, freq='5min')
+    np.random.seed(42)
+    returns = np.random.randn(n_bars) * 0.001 + 0.0001
+    price = 100 * np.exp(np.cumsum(returns))
+    volume = np.random.lognormal(10, 1, n_bars)
+    
+    return pd.DataFrame({
+        'Close': price,
+        'Volume': volume,
+        'High': price * (1 + np.abs(np.random.randn(n_bars) * 0.001)),
+        'Low': price * (1 - np.abs(np.random.randn(n_bars) * 0.001))
+    }, index=dates)
+    
 
 def train_job(data: pd.DataFrame) -> dict:
     """Run the training pipeline."""
