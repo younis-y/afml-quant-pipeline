@@ -2,11 +2,11 @@
 
 [![ci](https://github.com/younis-y/afml-quant-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/younis-y/afml-quant-pipeline/actions/workflows/ci.yml)
 
-A working implementation of the López de Prado *Advances in Financial Machine Learning* toolchain — dollar bars, fractional differentiation with a minimum-*d* stationarity search, triple-barrier labelling and meta-labelling, sequential-bootstrap sample weights, purged and combinatorial-purged cross-validation with embargo, probabilistic and deflated Sharpe ratios, and MDI/MDA/SFI feature importance — wired to an OpenBB v4.6 data layer, a walk-forward backtester and a Streamlit front end.
+A working implementation of the López de Prado *Advances in Financial Machine Learning* toolchain (dollar bars, fractional differentiation with a minimum-*d* stationarity search, triple-barrier labelling and meta-labelling, sequential-bootstrap sample weights, purged and combinatorial-purged cross-validation with embargo, probabilistic and deflated Sharpe ratios, and MDI/MDA/SFI feature importance) wired to an OpenBB v4.6 data layer, a walk-forward backtester and a Streamlit front end.
 
 ## The question
 
-*Advances in Financial Machine Learning* is mostly read, rarely built. Its methods are described as code snippets scattered across the book with no common interface: the sample-weight scheme in Chapter 4 assumes the label structure of Chapter 3, which assumes the bar structure of Chapter 2, which assumes tick or volume data that most retail sources do not supply. The question this repository answers is a narrow engineering one — **can the chain be assembled end to end, against a free data source, with each link tested in isolation?**
+*Advances in Financial Machine Learning* is mostly read, rarely built. Its methods are described as code snippets scattered across the book with no common interface: the sample-weight scheme in Chapter 4 assumes the label structure of Chapter 3, which assumes the bar structure of Chapter 2, which assumes tick or volume data that most retail sources do not supply. The question this repository answers is a narrow engineering one: **can the chain be assembled end to end, against a free data source, with each link tested in isolation?**
 
 It can. What follows is the assembled chain, the numbers that were actually measured while assembling it, and a Scope section stating what it does not do.
 
@@ -17,7 +17,7 @@ deliberately publishes no headline Sharpe ratio, no equity curve, and no backtes
 offered as evidence of edge. Every number below is a property of the code,
 measured by running it.
 
-That is not a gap — it is the argument of the chapters being implemented.
+That is not a gap. It is the argument of the chapters being implemented.
 Chapters 11–15 are a sustained case that a backtest is a research tool almost
 always misread as a discovery, and that a Sharpe ratio quoted without a trial
 count and a track-record length is not a number at all. The repository ships
@@ -81,7 +81,7 @@ than assumed. With `chromadb`, `langchain-google-genai`, `langchain-community`, 
 `analysis_engine/knowledge.py` imports cleanly without any of them; the classes that need one
 raise `ImportError` on construction, naming the package to install.
 
-No API key is required for anything above. Copy `.env.example` to `.env` only if you want the optional layers — see [Configuration](#configuration).
+No API key is required for anything above. Copy `.env.example` to `.env` only if you want the optional layers. See [Configuration](#configuration).
 
 ### A worked example
 
@@ -115,7 +115,7 @@ print("purged folds:", sum(1 for _ in cv.split(X)))             # 5
 Two things in that output are worth reading, and neither is a finding about markets:
 
 - The label distribution is skewed towards −1 because the barriers are asymmetric (2σ profit, 1σ stop) on a series with no drift. Set `profit_mult=1.0` and it moves to 1023/937. The skew is arithmetic, not signal.
-- Mean average uniqueness of 0.048 on 20-bar horizons is the concurrency problem the book's Chapter 4 exists to address: with overlapping labels, the 1960 observations carry roughly the independent information of 94 (1960 x 0.048 — a rule of thumb read off the two measured numbers above, not an output of any function here). This is why the sample weights and the sequential bootstrap are there.
+- Mean average uniqueness of 0.048 on 20-bar horizons is the concurrency problem the book's Chapter 4 exists to address: with overlapping labels, the 1960 observations carry roughly the independent information of 94 (1960 x 0.048, a rule of thumb read off the two measured numbers above, not an output of any function here). This is why the sample weights and the sequential bootstrap are there.
 
 ### Running the dashboard
 
@@ -156,13 +156,13 @@ Chapter numbers refer to *Advances in Financial Machine Learning* (Wiley, 2018) 
 
 *MLAM* = *Machine Learning for Asset Managers* (Cambridge, 2020).
 
-Supporting statistics outside the book — ADF, Hurst exponent, parametric / Cornish-Fisher / historical / bootstrap VaR and CVaR, GARCH fitting and GARCH VaR, fat-tail diagnostics — are in `analysis_engine/stats.py`.
+Supporting statistics outside the book (ADF, Hurst exponent, parametric / Cornish-Fisher / historical / bootstrap VaR and CVaR, GARCH fitting and GARCH VaR, fat-tail diagnostics) are in `analysis_engine/stats.py`.
 
 ## Data layer
 
-`utils/obb_client.py` is a singleton wrapper over OpenBB v4.6 and the only place in the repository that calls `from openbb import obb`. `utils/data_provider.py` is a thin compatibility shim over it, and the paths this README documents — `pipeline/data_processor.py`, `pipeline/feature_engineering.py`, `pipeline/forecaster.py`, `pipeline/optimiser.py`, `analysis_engine/core.py`, `ui/dashboard.py`, `scripts/00_data_download.py` — all go through one or the other.
+`utils/obb_client.py` is a singleton wrapper over OpenBB v4.6 and the only place in the repository that calls `from openbb import obb`. `utils/data_provider.py` is a thin compatibility shim over it, and the paths this README documents (`pipeline/data_processor.py`, `pipeline/feature_engineering.py`, `pipeline/forecaster.py`, `pipeline/optimiser.py`, `analysis_engine/core.py`, `ui/dashboard.py`, `scripts/00_data_download.py`) all go through one or the other.
 
-Four files predate the client and still call a vendor directly, which is a gap rather than a design: `pipeline/pair_trading.py`, `scripts/scan_market.py` and `scripts/research_trade.py` call `yfinance.download`, and `pipeline/symbol_resolver.py` — reachable from `api/server.py` — hits Yahoo's search endpoint with `requests`. They have not been migrated.
+Four files predate the client and still call a vendor directly, which is a gap rather than a design: `pipeline/pair_trading.py`, `scripts/scan_market.py` and `scripts/research_trade.py` call `yfinance.download`, and `pipeline/symbol_resolver.py`, reachable from `api/server.py`, hits Yahoo's search endpoint with `requests`. They have not been migrated.
 
 Fourteen methods, all against endpoints available on the free tier:
 
@@ -174,7 +174,7 @@ Fourteen methods, all against endpoints available on the free tier:
 | News and discovery | `get_company_news`, `get_market_movers` |
 | Other instruments | `get_etf_info`, `get_crypto_history`, `get_index_history` |
 
-Every response passes through `_to_df`, and the three price-series endpoints (`get_price_history`, `get_crypto_history`, `get_index_history`) additionally through `_normalise_ohlcv`, so column names and index types are consistent regardless of which provider OpenBB routes to. Failures raise `OBBClientError` rather than returning an empty frame — a silent empty frame downstream of a labelling step is very hard to notice.
+Every response passes through `_to_df`, and the three price-series endpoints (`get_price_history`, `get_crypto_history`, `get_index_history`) additionally through `_normalise_ohlcv`, so column names and index types are consistent regardless of which provider OpenBB routes to. Failures raise `OBBClientError` rather than returning an empty frame, because a silent empty frame downstream of a labelling step is very hard to notice.
 
 The important limitation: the free tier serves **daily OHLCV, not ticks**. Dollar bars in `pipeline/data_processor.py` are therefore constructed from daily bars using close × volume as the dollar-value proxy. That is a legitimate approximation of the aggregation but it is not the tick-level construction the book describes, and the information-driven bars of Chapter 2 (imbalance and run bars) are not implemented at all, because daily data cannot support them.
 
@@ -212,7 +212,7 @@ Copy `.env.example` to `.env`. Every variable is optional and none is needed for
 | Variable | Used by | Default |
 |---|---|---|
 | `GOOGLE_API_KEY` | Gemini embeddings in `analysis_engine/knowledge.py`, `utils/sanity_check.py` | none |
-| `GCP_PROJECT_ID` | Vertex AI embedding path, `scripts/check_llm.py`, `trade.sh` | none. `scripts/check_llm.py` raises `SystemExit` and `trade.sh` exits 1 when it is unset; `analysis_engine/knowledge.py` does not — it skips the Vertex branch silently and falls back to ChromaDB's default ONNX embeddings |
+| `GCP_PROJECT_ID` | Vertex AI embedding path, `scripts/check_llm.py`, `trade.sh` | none. `scripts/check_llm.py` raises `SystemExit` and `trade.sh` exits 1 when it is unset; `analysis_engine/knowledge.py` does not: it skips the Vertex branch silently and falls back to ChromaDB's default ONNX embeddings |
 | `GCP_LOCATION` | as above | `us-central1` |
 
 ## Scope
@@ -222,12 +222,12 @@ What this repository does **not** do, stated plainly so that nobody has to disco
 - **No strategy, no edge, no result.** Nothing here has been validated as profitable and nothing is presented as such. Generated tearsheets and training reports are git-ignored; the backtester writes a QuantStats tearsheet only when `BacktestConfig(tearsheet=True)` is set explicitly.
 - **No tick data, so no information-driven bars.** Dollar bars are approximated from daily OHLCV as described above. Tick, volume-imbalance and run bars (Ch. 2) are absent.
 - **No live execution.** `pipeline/live_engine.py` is a paper-trading loop. There is no broker integration, no order-management system and no position reconciliation.
-- **Duplicate implementations exist.** `PurgedKFold` appears twice — the `pipeline/sample_weights.py` version purges on label end times `t1` as the book specifies and is sklearn-compatible; the `utils/validation.py` version purges on index distance, trains only on data preceding the test fold, and is standalone. Fractional differentiation, triple-barrier labelling and the deflated Sharpe ratio are likewise implemented in two places. These grew from separate work sessions and have not been consolidated. The `pipeline/` versions are the ones to read.
+- **Duplicate implementations exist.** `PurgedKFold` appears twice. The `pipeline/sample_weights.py` version purges on label end times `t1` as the book specifies and is sklearn-compatible; the `utils/validation.py` version purges on index distance, trains only on data preceding the test fold, and is standalone. Fractional differentiation, triple-barrier labelling and the deflated Sharpe ratio are likewise implemented in two places. These grew from separate work sessions and have not been consolidated. The `pipeline/` versions are the ones to read.
 - **The data layer is not universal.** `utils/obb_client.py` is the OpenBB entry point, but four modules bypass it and call yfinance or Yahoo's search endpoint directly, as listed under [Data layer](#data-layer). Nothing routes their requests through the client's error contract or its `_normalise_ohlcv` step.
 - **Backtest costs are simplistic.** Fixed percentage commission and slippage. No market-impact model, no borrow cost, no partial fills.
 - **`CombinatorialPurgedKFold` is implemented but not integrated, and its purging is too coarse.** It generates the C(N,k) splits and the corresponding backtest paths, but nothing in the pipeline consumes the path distribution to compute a probability of backtest overfitting (Ch. 11-12), which is the point of having it. Worse, its `_purge()` works on the `[min, max]` span of the test set rather than on each contiguous test block, so a combination whose test groups are not adjacent purges every training observation lying between them. At the pipeline defaults (`n_groups=10`, `k_test_groups=2`) that is 45 splits, of which one is left with an empty training set and the worst non-empty ones keep only about an eighth of the rows lying outside the test folds. `AdvancedPipeline` therefore builds the object for inspection and prints its split and path counts, but scores with `PurgedKFold`; the printed line says so. Fixing the purge properly is a change to the CPCV semantics, not a typo, and has not been made.
 - **Statistical tests are not benchmarked against a reference implementation.** The AFML routines are tested for shape, sign, monotonicity and known edge cases, not against published numerical fixtures from `mlfinlab` or the book's own examples. They are unit-tested, not validated.
-- **The RAG and REST layers are peripheral.** `analysis_engine/knowledge.py` and `api/server.py` are optional extras from an earlier design and are not part of the AFML argument. Two rough edges survive in the knowledge base and are called out here rather than left to be discovered: `KnowledgeBase.__init__` `chdir`s to `/` and back around ChromaDB's `Settings()` construction, to stop pydantic reading a `.env` file in the working directory; and `use_local_cache_dirs()` rewrites `HOME` and `XDG_CACHE_HOME` to point at `./.cache`, for machines where the system cache directory is locked. That function is opt-in and is never called on import — importing this package changes nothing in your environment. `api/server.py` serves JSON only; the repository ships no frontend, so its CORS origins are simply the usual localhost dev ports.
+- **The RAG and REST layers are peripheral.** `analysis_engine/knowledge.py` and `api/server.py` are optional extras from an earlier design and are not part of the AFML argument. Two rough edges survive in the knowledge base and are called out here rather than left to be discovered: `KnowledgeBase.__init__` `chdir`s to `/` and back around ChromaDB's `Settings()` construction, to stop pydantic reading a `.env` file in the working directory; and `use_local_cache_dirs()` rewrites `HOME` and `XDG_CACHE_HOME` to point at `./.cache`, for machines where the system cache directory is locked. That function is opt-in and is never called on import, so importing this package changes nothing in your environment. `api/server.py` serves JSON only; the repository ships no frontend, so its CORS origins are simply the usual localhost dev ports.
 
 ## Licence
 
