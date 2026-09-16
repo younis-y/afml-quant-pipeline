@@ -8,13 +8,11 @@ Implements non-IID handling from AFML Chapter 4 and 7:
 - Combinatorial Purged Cross-Validation (CPCV)
 """
 
-from typing import Optional, Tuple, List, Dict, Generator
+from typing import Optional, Tuple, Dict, Generator
 import numpy as np
 import pandas as pd
 from numba import jit
 from sklearn.model_selection import BaseCrossValidator
-from sklearn.utils import indexable
-import warnings
 
 
 # =============================================================================
@@ -164,7 +162,7 @@ def _compute_sequential_uniqueness(
 ) -> np.ndarray:
     """JIT-optimized uniqueness computation for sequential bootstrap."""
     n_obs = ind_matrix.shape[1]
-    n_drawn = len(drawn_indices)
+    len(drawn_indices)
     
     # Compute concurrent labels from drawn samples
     concurrent = np.zeros(ind_matrix.shape[0])
@@ -601,7 +599,7 @@ def cv_score_with_purging(
     """
     from sklearn.metrics import (
         accuracy_score, precision_score, recall_score, 
-        f1_score, log_loss
+        f1_score
     )
     
     if hasattr(cv, 'split'):

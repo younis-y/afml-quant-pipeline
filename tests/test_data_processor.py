@@ -5,13 +5,11 @@ Dollar bars, fractional differentiation, and data processing.
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from pipeline.data_processor import (
     dollar_bars,
     get_weights_ffd,
     frac_diff_fixed,
-    find_min_d_for_stationarity,
     compute_correlation_with_original,
     DataProcessor,
 )

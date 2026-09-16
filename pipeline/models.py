@@ -10,26 +10,21 @@ Implements sophisticated ML approaches for financial prediction:
 Reference: AFML Chapters 6, 8, 10, 14
 """
 
-from typing import Optional, Tuple, Dict, List, Any, Union
+from typing import Dict, List, Any
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-import warnings
-import joblib
 
 # ML Libraries
 from sklearn.ensemble import (
     RandomForestClassifier, 
-    GradientBoostingClassifier,
-    BaggingClassifier,
-    AdaBoostClassifier
+    GradientBoostingClassifier
 )
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
 from sklearn.metrics import (
     accuracy_score, precision_score, recall_score, f1_score,
-    log_loss, roc_auc_score, classification_report
+    log_loss, roc_auc_score
 )
 from sklearn.preprocessing import StandardScaler
 from sklearn.base import BaseEstimator, ClassifierMixin, clone
@@ -687,7 +682,7 @@ def evaluate_model_comprehensive(
     
     try:
         metrics['auc_roc'] = roc_auc_score(y_test, y_proba)
-    except:
+    except Exception:
         metrics['auc_roc'] = np.nan
     
     # Financial metrics if returns available

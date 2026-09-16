@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass, field
-from typing import Optional
 
 import numpy as np
 import pandas as pd
@@ -381,7 +380,7 @@ class StrategyOptimiser:
             std = close.rolling(w).std()
             for s in stds:
                 lower = ma - s * std
-                upper = ma + s * std
+                ma + s * std
                 long_signal = (close < lower).astype(int)
                 rets = close.pct_change() * long_signal.shift(1)
                 sharpes[(w, s)] = _annualised_sharpe(rets)

@@ -4,7 +4,6 @@ AFML Quant Pipeline - Main Entry Point
 Quantitative Research Platform backed by OpenBB v4.6.
 """
 
-import os
 import sys
 from pathlib import Path
 

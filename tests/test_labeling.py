@@ -5,7 +5,6 @@ Triple Barrier Method, meta-labels, and advanced labeling.
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from pipeline.labeling import (
     get_volatility,

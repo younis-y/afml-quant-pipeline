@@ -4,10 +4,8 @@ CacheManager: get/set/clear/TTL, thread safety, global instance.
 """
 
 import threading
-import time
 from unittest.mock import patch
 
-import pytest
 
 from utils.cache import CacheManager, cache
 

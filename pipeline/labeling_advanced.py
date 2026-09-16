@@ -153,7 +153,7 @@ def triple_barrier_labels(
         try:
             start_loc = price_index.get_loc(t0)
             end_loc = price_index.get_loc(t1_val)
-        except:
+        except Exception:
             continue
         
         price_path = prices[start_loc:end_loc + 1]
@@ -289,7 +289,7 @@ def trend_scanning_labels(
                     best_tval = tval
                     best_horizon = h
                     
-            except:
+            except Exception:
                 continue
         
         result.iloc[i, result.columns.get_loc('tval')] = best_tval
@@ -299,7 +299,7 @@ def trend_scanning_labels(
         try:
             end_idx = min(i + int(best_horizon), len(close) - 1)
             result.iloc[i, result.columns.get_loc('t1')] = close.index[end_idx]
-        except:
+        except Exception:
             pass
     
     return result.dropna(subset=['label'])

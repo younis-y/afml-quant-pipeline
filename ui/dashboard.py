@@ -28,7 +28,6 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import plotly.graph_objects as go
-import plotly.express as px
 from plotly.subplots import make_subplots
 
 # ── Page config ────────────────────────────────────────────────────────────────
@@ -354,7 +353,6 @@ with tab_forecast:
         fc_run = st.button("RUN FORECAST", key="fc_run", use_container_width=True)
 
     if fc_run and fc_ticker:
-        from utils.obb_client import get_obb_client
 
         hist_days = {"1y": 365, "2y": 730, "3y": 1095, "5y": 1825}[fc_hist]
         with st.spinner(f"Forecasting {fc_ticker}..."):

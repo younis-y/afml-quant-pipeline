@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats as sp_stats
 from statsmodels.tsa.stattools import adfuller
-from typing import Dict, Union, Optional, List, Tuple
+from typing import Dict, Union, Optional, List
 import warnings
 
 # ---------------------------------------------------------------------------

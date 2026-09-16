@@ -3,9 +3,7 @@ Tests for pipeline/pair_trading.py — CointegrationTester & MeanReversionStrate
 Pure math, no network/API calls.
 """
 
-import numpy as np
 import pandas as pd
-import pytest
 
 from pipeline.pair_trading import CointegrationTester, MeanReversionStrategy
 
@@ -23,7 +21,7 @@ class TestCointegrationTester:
         s1, s2 = sample_independent_pair
         result = CointegrationTester.engage_engle_granger(s1, s2)
         assert isinstance(result, dict)
-        assert result["is_cointegrated"] == False
+        assert not result["is_cointegrated"]
 
     def test_hedge_ratio_returned(self, sample_cointegrated_pair):
         s1, s2 = sample_cointegrated_pair

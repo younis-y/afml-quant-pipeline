@@ -12,9 +12,9 @@ Features:
 Reference: Advances in Financial Machine Learning, Chapters 10-11
 """
 
-from typing import Optional, Dict, List, Any, Callable
+from typing import Optional, Dict, List, Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 import numpy as np
 import pandas as pd

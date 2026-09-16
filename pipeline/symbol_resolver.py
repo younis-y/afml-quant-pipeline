@@ -20,13 +20,13 @@ def search_ticker(query: str) -> List[Dict[str, Any]]:
     if not query or len(query.strip()) < 1:
         return []
         
-    url = f"https://query2.finance.yahoo.com/v1/finance/search"
+    url = "https://query2.finance.yahoo.com/v1/finance/search"
     
     # Generate random user agent to avoid 403 blocks
     try:
         ua = UserAgent()
         user_agent = ua.chrome
-    except:
+    except Exception:
         user_agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         
     headers = {

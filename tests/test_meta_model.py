@@ -5,9 +5,8 @@ SMA Crossover primary model and MetaModel secondary model.
 
 import numpy as np
 import pandas as pd
-import pytest
 
-from pipeline.meta_model import SMACrossover, MetaModel, MetaLabelingPipeline
+from pipeline.meta_model import SMACrossover, MetaModel
 
 
 # ── SMA Crossover ────────────────────────────────────────────────────────────

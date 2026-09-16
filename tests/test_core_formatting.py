@@ -3,7 +3,6 @@ Tests for analysis_engine/core.py — formatting helpers.
 _format_var_block, _format_fat_tail_block, _format_garch_block.
 """
 
-import pytest
 
 from analysis_engine.core import _format_var_block, _format_fat_tail_block, _format_garch_block
 

@@ -4,13 +4,12 @@ Primary model (SMA Crossover) + Secondary model (Random Forest)
 Reference: Advances in Financial Machine Learning, Chapter 3
 """
 
-from typing import Tuple, Dict, Any, Optional
+from typing import Dict, Any, Optional
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_val_score
-from sklearn.metrics import classification_report, precision_score, recall_score, f1_score
+from sklearn.metrics import precision_score, recall_score, f1_score
 import joblib
 
 from .labeling import triple_barrier_labels, get_meta_labels, get_volatility
@@ -390,7 +389,7 @@ class MetaLabelingPipeline:
         features = self.meta.prepare_features(close, frac_diff, volatility)
         if len(features) == 0:
             raise ValueError(
-                f"Feature preparation produced 0 samples. Check for NaN values in input data."
+                "Feature preparation produced 0 samples. Check for NaN values in input data."
             )
         
         # Step 5: Align features and meta_labels
@@ -547,5 +546,5 @@ if __name__ == "__main__":
     print("\n3. Generating Predictions...")
     predictions = pipeline.predict(close)
     
-    print(f"\n   Action Distribution:")
+    print("\n   Action Distribution:")
     print(predictions['action'].value_counts())

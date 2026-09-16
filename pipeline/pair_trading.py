@@ -4,11 +4,10 @@ Implements multi-asset data processing and statistical arbitrage strategies.
 """
 
 import pandas as pd
-import numpy as np
 import yfinance as yf
 from scipy import stats
-from statsmodels.tsa.stattools import coint, adfuller
-from typing import Tuple, Optional, Dict, List
+from statsmodels.tsa.stattools import adfuller
+from typing import Dict
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -36,8 +35,10 @@ class PairDataProcessor:
         df2 = yf.download(self.ticker2, period=period, interval=interval, progress=False)
         
         # Handle multi-index if present
-        if isinstance(df1.columns, pd.MultiIndex): df1.columns = df1.columns.get_level_values(0)
-        if isinstance(df2.columns, pd.MultiIndex): df2.columns = df2.columns.get_level_values(0)
+        if isinstance(df1.columns, pd.MultiIndex):
+            df1.columns = df1.columns.get_level_values(0)
+        if isinstance(df2.columns, pd.MultiIndex):
+            df2.columns = df2.columns.get_level_values(0)
             
         # Extract Close prices
         s1 = df1['Close']

@@ -5,7 +5,6 @@ Financial models, ensemble, feature importance, Sharpe ratio statistics.
 
 import numpy as np
 import pandas as pd
-import pytest
 
 from pipeline.models import (
     FinancialRandomForest,

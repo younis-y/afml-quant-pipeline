@@ -232,7 +232,7 @@ def _run_arima(close: pd.Series, horizon: int) -> Optional[ModelForecast]:
         returns = close.pct_change().dropna()
         # Fit on returns (stationary), forecast returns, then cumulate to prices
         train_size = int(len(returns) * 0.8)
-        train, test = returns.iloc[:train_size], returns.iloc[train_size:]
+        train, _test = returns.iloc[:train_size], returns.iloc[train_size:]
 
         model = ARIMA(train, order=(2, 0, 2))
         fit = model.fit()
@@ -276,7 +276,6 @@ def _run_ets(close: pd.Series, horizon: int) -> Optional[ModelForecast]:
 
         model = ExponentialSmoothing(train, trend="add", damped_trend=True, seasonal=None)
         fit = model.fit(optimized=True)
-        val_pred = fit.fittedvalues
         rmse = float(np.sqrt(np.mean((test.values - fit.forecast(len(test)).values) ** 2)))
 
         fit_full = ExponentialSmoothing(close, trend="add", damped_trend=True, seasonal=None).fit(optimized=True)
@@ -322,7 +321,7 @@ def _run_garch(close: pd.Series, horizon: int) -> Optional[ModelForecast]:
         prices = last_price * (1 + cum_ret)
 
         # CI from conditional variance
-        vol_fc = np.sqrt(var_fc)
+        np.sqrt(var_fc)
         z = 1.645
         cum_vol = np.sqrt(np.cumsum(var_fc))
         lower = last_price * np.exp(-z * cum_vol)

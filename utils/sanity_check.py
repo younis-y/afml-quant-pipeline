@@ -3,7 +3,7 @@ AFML Quant Pipeline - Sanity Check Utility
 Uses Gemini with Google Search Grounding to check for alpha decay
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv

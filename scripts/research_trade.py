@@ -38,7 +38,8 @@ logger = logging.getLogger(__name__)
 
 # Auth Logic
 def get_api_key(args_key):
-    if args_key: return args_key
+    if args_key:
+        return args_key
     
     # Try scripts/.env
     script_env = os.path.join(os.path.dirname(__file__), '.env')

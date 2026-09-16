@@ -144,5 +144,19 @@ __all__ = [
     'MetaLabelingModel',
     'deflated_sharpe_ratio',
     'probabilistic_sharpe_ratio',
+    # Re-exported helpers
+    'get_roll_spread',
+    'get_kyle_lambda',
+    'get_amihud_lambda',
+    'get_vpin',
+    'get_lempel_ziv_entropy',
+    'get_shannon_entropy',
+    'get_cusum_filter',
+    'advanced_triple_barrier_labels',
+    'advanced_get_meta_labels',
+    'get_daily_volatility',
+    'get_combined_sample_weights',
+    'cv_score_with_purging',
+    'FinancialGradientBoosting',
+    'compute_sharpe_ratio',
 ]
-

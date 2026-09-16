@@ -6,13 +6,12 @@ Implements state-of-the-art financial feature engineering from:
 - Machine Learning for Algorithmic Trading (Jansen)
 """
 
-from typing import Optional, Tuple, Dict, List, Union
+from typing import Optional, Tuple, List
 import numpy as np
 import pandas as pd
 from scipy import stats
 from scipy.stats import entropy as scipy_entropy
-from numba import jit, prange
-import warnings
+from numba import jit
 
 from pipeline.technical_indicators import TechnicalIndicators
 
@@ -248,7 +247,7 @@ def get_kyle_lambda(close: pd.Series, volume: pd.Series, window: int = 20) -> pd
         try:
             slope, _, _, _, _ = stats.linregress(vol, ret)
             return abs(slope)
-        except:
+        except Exception:
             return np.nan
     
     lambda_series = pd.Series(index=close.index, dtype=float)
@@ -347,8 +346,8 @@ def _lempel_ziv_complexity(binary_str: np.ndarray) -> float:
         for j in range(i):
             if j + k <= i:
                 match = True
-                for l in range(k):
-                    if binary_str[j + l] != substr[l]:
+                for m in range(k):
+                    if binary_str[j + m] != substr[m]:
                         match = False
                         break
                 if match:
@@ -394,7 +393,7 @@ def get_lempel_ziv_entropy(series: pd.Series, n_bins: int = 10, window: int = 50
             bins = pd.qcut(window_returns, n_bins, labels=False, duplicates='drop')
             binary = (bins > bins.median()).astype(int).values
             result.iloc[i] = _lempel_ziv_complexity(binary)
-        except:
+        except Exception:
             continue
     
     return result
@@ -421,7 +420,7 @@ def get_shannon_entropy(series: pd.Series, n_bins: int = 10, window: int = 50) -
             hist, _ = np.histogram(window_returns, bins=n_bins, density=True)
             hist = hist[hist > 0]  # Remove zeros
             result.iloc[i] = scipy_entropy(hist, base=2)
-        except:
+        except Exception:
             continue
     
     return result
@@ -490,7 +489,7 @@ def get_sadf(
             try:
                 adf_stat, _, _, _, _, _ = adfuller(window, maxlag=lags, regression='c')
                 adf_stats.append(adf_stat)
-            except:
+            except Exception:
                 continue
         
         if adf_stats:
@@ -547,7 +546,7 @@ def get_trend_scanning_labels(
                 if r_value ** 2 >= min_r2 and abs(tval) > abs(best_tval):
                     best_tval = tval
                     best_horizon = h
-            except:
+            except Exception:
                 continue
         
         result.iloc[i, result.columns.get_loc('tval')] = best_tval
@@ -767,5 +766,5 @@ if __name__ == "__main__":
     print(f"\nGenerated {len(features.columns)} features:")
     print(features.columns.tolist()[:20], "...")
     print(f"\nFeature matrix shape: {features.shape}")
-    print(f"\nSample features (last 5 rows):")
+    print("\nSample features (last 5 rows):")
     print(features.iloc[-5:, :5])

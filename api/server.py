@@ -8,9 +8,8 @@ local single-page client would typically use.
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from typing import Optional, List, Dict, Any
+from typing import Optional, List
 import pandas as pd
-import numpy as np
 from datetime import datetime
 import sys
 from pathlib import Path
@@ -179,7 +178,7 @@ async def get_dashboard_data(
                 else:
                     action = "PASS"
                     confidence = 0.5
-            except Exception as e:
+            except Exception:
                 # If prediction fails (e.g. data mismatch), re-train in background
                 background_tasks.add_task(pipeline.train, close)
                 action = "WAIT"

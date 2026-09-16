@@ -10,33 +10,22 @@ Complete quantitative trading ML system implementing:
 Reference: Advances in Financial Machine Learning (López de Prado)
 """
 
-from typing import Optional, Dict, List, Any, Tuple
+from typing import Optional, Dict
 import numpy as np
 import pandas as pd
 from dataclasses import dataclass, field
-from datetime import datetime
-import warnings
 import joblib
-from pathlib import Path
 
 # Local imports
 from .feature_engineering import (
-    AdvancedFeatureEngine,
-    frac_diff_ffd,
-    find_optimal_d
+    AdvancedFeatureEngine
 )
 from .labeling_advanced import (
-    AdvancedLabeler,
-    triple_barrier_labels,
-    get_meta_labels,
-    get_daily_volatility,
-    cusum_filter
+    AdvancedLabeler
 )
 from .sample_weights import (
     get_average_uniqueness,
     get_combined_sample_weights,
-    sequential_bootstrap,
-    get_indicator_matrix,
     PurgedKFold,
     CombinatorialPurgedKFold,
     cv_score_with_purging
@@ -47,9 +36,6 @@ from .models import (
     FinancialEnsemble,
     MetaLabelingModel,
     mean_decrease_impurity,
-    mean_decrease_accuracy,
-    compute_sharpe_ratio,
-    probabilistic_sharpe_ratio,
     deflated_sharpe_ratio,
     evaluate_model_comprehensive
 )
@@ -364,7 +350,7 @@ class AdvancedMLPipeline:
                 self.model.model if hasattr(self.model, 'model') else self.model,
                 list(X.columns)
             )
-        except:
+        except Exception:
             feature_importance = pd.Series()
         
         # Financial metrics

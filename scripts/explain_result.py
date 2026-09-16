@@ -5,7 +5,6 @@ Queries the RAG Knowledge Base to explain financial concepts.
 """
 
 import sys
-import os
 from pathlib import Path
 
 # Add project root to path

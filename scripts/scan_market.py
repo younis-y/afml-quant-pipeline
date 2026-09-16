@@ -13,7 +13,6 @@ import logging
 import traceback
 import pandas as pd
 import yfinance as yf
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from tqdm import tqdm
 
 # Add project root path
@@ -126,7 +125,6 @@ def main():
     
     for r in results:
         # Highlights
-        color = "" 
         # (Since this is terminal, we skip ANSI colors to avoid compatibility issues, 
         # or we could use them if we knew the shell supports it. Keeping plain text for safety.)
         

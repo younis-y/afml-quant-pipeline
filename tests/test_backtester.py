@@ -11,7 +11,6 @@ from pipeline.backtester import (
     BacktestResult,
     Trade,
     Position,
-    compute_backtest_metrics,
     quick_backtest,
 )
 

@@ -4,11 +4,10 @@ Statistical tests for strategy validation
 Reference: Advances in Financial Machine Learning, Chapters 7-8, 11
 """
 
-from typing import Tuple, List, Optional, Dict, Any
+from typing import List, Optional, Dict, Any
 import numpy as np
 import pandas as pd
 from scipy import stats
-from sklearn.model_selection import KFold
 from dataclasses import dataclass
 
 

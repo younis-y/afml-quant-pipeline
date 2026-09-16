@@ -5,7 +5,7 @@ Real-time paper trading loop with signal filtering
 
 from typing import Optional, Dict, Any, Callable
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import datetime
 import time
 import threading
 import logging
@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 
 from .data_processor import fetch_data, dollar_bars, frac_diff_fixed
-from .meta_model import MetaLabelingPipeline, SMACrossover
+from .meta_model import MetaLabelingPipeline
 
 # Configure logging
 logging.basicConfig(

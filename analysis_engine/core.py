@@ -6,7 +6,6 @@ The Gemini/Vertex AI agent system has been removed.
 """
 
 import logging
-from typing import Optional
 
 import pandas as pd
 

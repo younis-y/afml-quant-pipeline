@@ -3,12 +3,9 @@ Tests for pipeline/feature_engineering.py
 Fractional differentiation, microstructure features, entropy, structural breaks.
 """
 
-import numpy as np
 import pandas as pd
-import pytest
 
 from pipeline.feature_engineering import (
-    get_weights_ffd,
     frac_diff_ffd,
     find_optimal_d,
     get_roll_spread,

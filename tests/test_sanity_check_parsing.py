@@ -9,7 +9,6 @@ import os
 # Ensure env var exists so the import doesn't crash.
 os.environ.setdefault("GOOGLE_API_KEY", "dummy-key-for-testing")
 
-import pytest
 
 from utils.sanity_check import _parse_sanity_check_response, format_sanity_report
 

@@ -4,10 +4,9 @@ Converts raw market data to Dollar Bars and applies Fractional Differentiation
 Reference: Advances in Financial Machine Learning, Chapters 2-5
 """
 
-from typing import Optional, Tuple
+from typing import Tuple
 import numpy as np
 import pandas as pd
-from functools import lru_cache
 
 from utils.data_provider import get_data_provider
 

@@ -5,7 +5,6 @@ Purged K-Fold CV, Deflated Sharpe Ratio, Sharpe calculation, strategy validation
 
 import numpy as np
 import pandas as pd
-import pytest
 from sklearn.ensemble import RandomForestClassifier
 
 from utils.validation import (
