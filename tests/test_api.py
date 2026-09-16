@@ -38,8 +38,9 @@ class TestHealthEndpoint:
 
 class TestDashboardEndpoint:
     @pytest.mark.slow
+    @pytest.mark.network
     def test_dashboard_returns_200(self, client):
-        response = client.get("/dashboard?ticker=SPY&period=5d")
+        response = client.get("/api/data?ticker=SPY&period=2y")
         assert response.status_code == 200
         data = response.json()
         assert "metrics" in data
@@ -50,6 +51,7 @@ class TestDashboardEndpoint:
 
 class TestSymbolEndpoint:
     @pytest.mark.slow
+    @pytest.mark.network
     def test_resolve_symbol(self, client):
-        response = client.get("/resolve-symbol?query=AAPL")
+        response = client.get("/api/resolve-symbol?query=AAPL")
         assert response.status_code == 200
