@@ -178,7 +178,6 @@ analysis_engine/     ADF, Hurst, VaR suite, GARCH, fat tails; RAG knowledge base
 utils/               OpenBB client, validation, TTL cache, sanity check
 ui/dashboard.py      Streamlit front end
 api/server.py        FastAPI REST layer (optional)
-rag/                 re-export shim over analysis_engine.knowledge
 scripts/             download, training, scanning, explanation helpers
 tests/               18 modules, 183 tests
 ```
